@@ -48,3 +48,40 @@ def todo_delete(request, pk):
     todo.delete()
     messages.success(request, 'Silindi.')
     return redirect("index")
+
+from django.views.generic import ListView,DetailView,CreateView,UpdateView,DeleteView
+
+class TodoListView(ListView):
+    model= Todo
+    # template_name= 'todo_list.html'
+
+class TodoDetailView(DetailView):
+    model= Todo
+
+from django.urls import reverse_lazy
+
+class TodoCreateView(CreateView):
+    model= Todo
+    form_class = TodoForm
+    success_url = reverse_lazy('todo_list')
+
+    def post(self, request, *args, **kwargs):
+        messages.success(request, 'Added.')
+        return super().post(request, *args, **kwargs)
+
+class TodoUpdateView(UpdateView):
+    model= Todo
+    form_class = TodoForm
+    success_url = reverse_lazy('todo_list')
+
+    def post(self, request, *args, **kwargs):
+        messages.success(request, 'Updated.')
+        return super().post(request, *args, **kwargs)
+    
+class TodoDeleteView(DeleteView):
+    model= Todo
+    success_url = reverse_lazy('todo_list')
+
+    def post(self, request, *args, **kwargs):
+        messages.success(request, 'Updated.')
+        return super().post(request, *args, **kwargs)
